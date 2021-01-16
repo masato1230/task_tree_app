@@ -9,6 +9,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
+        android:paddingBottom="5dp"
         android:background="@drawable/background_home_header"
         android:layout_height="wrap_content" >
 
@@ -53,12 +54,12 @@
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="list" />
+                android:text="tree" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="tree"/>
+                android:text="list"/>
 
         </com.google.android.material.tabs.TabLayout>
 
