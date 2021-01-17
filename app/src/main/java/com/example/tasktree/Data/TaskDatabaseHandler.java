@@ -48,7 +48,7 @@ public class TaskDatabaseHandler extends SQLiteOpenHelper {
 
 
     // add
-    public void addTask(Task task) {
+    public long addTask(Task task) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -87,7 +87,7 @@ public class TaskDatabaseHandler extends SQLiteOpenHelper {
         values.put(TaskConstants.KEY_X, task.getX());
         values.put(TaskConstants.KEY_Y, task.getY());
 
-        db.insert(TaskConstants.TABLE_NAME, null, values);
+        return db.insert(TaskConstants.TABLE_NAME, null, values);
     }
 
     // get one
@@ -101,23 +101,30 @@ public class TaskDatabaseHandler extends SQLiteOpenHelper {
         if (cursor != null) {
             cursor.moveToNext();
         }
+        // id
         task.setId(cursor.getInt(cursor.getColumnIndex(TaskConstants.KEY_ID)));
+        // title
         task.setTitle(cursor.getString(cursor.getColumnIndex(TaskConstants.KEY_TITLE)));
+        // subTask List
         List<Task> subTaskList = new ArrayList<>();
         String subTaskIDSString = cursor.getString(cursor.getColumnIndex(TaskConstants.KEY_SUB_TASK_IDS));
-        String[] subTaskIDSplit = subTaskIDSString.split(",");
-        for (String subTaskIDString: subTaskIDSplit) {
-            int subTaskID = Integer.parseInt(subTaskIDString);
-            Task subTask = getTask(subTaskID);
-            subTaskList.add(subTask);
+        if (subTaskIDSString != null) {
+            String[] subTaskIDSplit = subTaskIDSString.split(",");
+            for (String subTaskIDString: subTaskIDSplit) {
+                int subTaskID = Integer.parseInt(subTaskIDString);
+                Task subTask = getTask(subTaskID);
+                subTaskList.add(subTask);
+                task.setSubTaskList(subTaskList);
+            }
         }
-        task.setSubTaskList(subTaskList);
+        // isCalendar
         int isCalendarInt = cursor.getInt(cursor.getColumnIndex(TaskConstants.KEY_IS_CALENDER));
         boolean isCalendar = false;
         if (isCalendarInt==1) {
             isCalendar = true;
         }
         task.setIsCalender(isCalendar);
+        // isFinish
         int isFinishInt = cursor.getInt(cursor.getColumnIndex(TaskConstants.KEY_IS_FINISH));
         boolean isFinish = false;
         if (isFinishInt==1) {
@@ -126,7 +133,7 @@ public class TaskDatabaseHandler extends SQLiteOpenHelper {
         task.setIsFinish(isFinish);
         // finish date
         String finishDateString = cursor.getString(cursor.getColumnIndex(TaskConstants.KEY_FINISH_DATE));
-        if (!finishDateString.isEmpty()) {
+        if (finishDateString != null) {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
             try {
                 Date date = simpleDateFormat.parse(finishDateString);
@@ -164,11 +171,14 @@ public class TaskDatabaseHandler extends SQLiteOpenHelper {
                 task.setTitle(cursor.getString(cursor.getColumnIndex(TaskConstants.KEY_TITLE)));
                 List<Task> subTaskList = new ArrayList<>();
                 String subTaskIDSString = cursor.getString(cursor.getColumnIndex(TaskConstants.KEY_SUB_TASK_IDS));
-                String[] subTaskIDSplit = subTaskIDSString.split(",");
-                for (String subTaskIDString: subTaskIDSplit) {
-                    int subTaskID = Integer.parseInt(subTaskIDString);
-                    Task subTask = getTask(subTaskID);
-                    subTaskList.add(subTask);
+                if (!subTaskIDSString.isEmpty()) {
+                    String[] subTaskIDSplit = subTaskIDSString.split(",");
+                    for (String subTaskIDString: subTaskIDSplit) {
+                        int subTaskID = Integer.parseInt(subTaskIDString);
+                        Task subTask = getTask(subTaskID);
+                        subTaskList.add(subTask);
+                        task.setSubTaskList(subTaskList);
+                    }
                 }
                 task.setSubTaskList(subTaskList);
                 int isCalendarInt = cursor.getInt(cursor.getColumnIndex(TaskConstants.KEY_IS_CALENDER));
@@ -189,7 +199,7 @@ public class TaskDatabaseHandler extends SQLiteOpenHelper {
                     isMain = true;
                 }
                 String finishDateString = cursor.getString(cursor.getColumnIndex(TaskConstants.KEY_FINISH_DATE));
-                if (!finishDateString.isEmpty()) {
+                if (finishDateString != null) {
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
                     try {
                         Date date = simpleDateFormat.parse(finishDateString);

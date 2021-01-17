@@ -22,11 +22,13 @@ import java.util.List;
 
 public class ProjectDatabaseHandler extends SQLiteOpenHelper {
     private Context context;
+    private TaskDatabaseHandler taskDB;
 
 
     public ProjectDatabaseHandler(@Nullable Context context) {
         super(context, ProjectConstants.DB_NAME, null, ProjectConstants.DB_VERSION);
         this.context = context;
+        this.taskDB = new TaskDatabaseHandler(context);
     }
 
     @Override
@@ -91,23 +93,30 @@ public class ProjectDatabaseHandler extends SQLiteOpenHelper {
         if (cursor != null) {
             cursor.moveToFirst();
         }
-
+        // id
         project.setId(cursor.getInt(cursor.getColumnIndex(ProjectConstants.KEY_ID)));
+        // title
         project.setTitle(cursor.getString(cursor.getColumnIndex(ProjectConstants.KEY_TITLE)));
+        // taskList
+        List<Task> taskList = new ArrayList<>();
         String taskIDsString = cursor.getString(cursor.getColumnIndex(ProjectConstants.KEY_TASK_IDS));
         String[] taskIDsSplit = taskIDsString.split(",");
         for (String taskIDString: taskIDsSplit) {
             int taskID = Integer.parseInt(taskIDsString);
-            // todo taskDB(affter)
+            Task task = taskDB.getTask(taskID);
+            taskList.add(task);
         }
-        // todo project.setTasks();
+        project.setTasks(taskList);
+        // isFinish
         int isFinishInt = cursor.getInt(cursor.getColumnIndex(ProjectConstants.KEY_IS_FINISH));
         boolean isFinish = false;
         if (isFinishInt == 1) {
             isFinish = true;
         }
         project.setFinish(isFinish);
+        // color index
         project.setColorInteger(cursor.getInt(cursor.getColumnIndex(ProjectConstants.KEY_COLOR_INTEGER)));
+        // created Date
         String createdDateString = cursor.getString(cursor.getColumnIndex(ProjectConstants.KEY_CREATED_AT));
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
         try {
@@ -134,13 +143,15 @@ public class ProjectDatabaseHandler extends SQLiteOpenHelper {
                 Project project = new Project();
                 project.setId(cursor.getInt(cursor.getColumnIndex(ProjectConstants.KEY_ID)));
                 project.setTitle(cursor.getString(cursor.getColumnIndex(ProjectConstants.KEY_TITLE)));
+                List<Task> taskList = new ArrayList<>();
                 String taskIDsString = cursor.getString(cursor.getColumnIndex(ProjectConstants.KEY_TASK_IDS));
                 String[] taskIDsSplit = taskIDsString.split(",");
                 for (String taskIDString: taskIDsSplit) {
                     int taskID = Integer.parseInt(taskIDsString);
-                    // todo taskDB(affter)
+                    Task task = taskDB.getTask(taskID);
+                    taskList.add(task);
                 }
-                // todo project.setTasks();
+                project.setTasks(taskList);
                 int isFinishInt = cursor.getInt(cursor.getColumnIndex(ProjectConstants.KEY_IS_FINISH));
                 boolean isFinish = false;
                 if (isFinishInt == 1) {
@@ -222,9 +233,11 @@ public class ProjectDatabaseHandler extends SQLiteOpenHelper {
         mainTask.setX(100);
         mainTask.setY(400);
         TaskDatabaseHandler taskDB = new TaskDatabaseHandler(context);
-        taskDB.addTask(mainTask);
+        int mainTaskID = (int) taskDB.addTask(mainTask);
 
         List<Task> taskList = new ArrayList<>();
+        // mainTaskをDBの内容で上書き
+        mainTask = taskDB.getTask(mainTaskID);
         taskList.add(mainTask);
         project.setTasks(taskList);
     }
