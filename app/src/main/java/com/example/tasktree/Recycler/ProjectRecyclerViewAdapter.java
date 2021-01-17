@@ -2,6 +2,7 @@ package com.example.tasktree.Recycler;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.text.Layout;
@@ -14,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tasktree.Activity.TreeActivity;
 import com.example.tasktree.Data.ProjectDatabaseHandler;
 import com.example.tasktree.Data.TaskDatabaseHandler;
 import com.example.tasktree.Models.Project;
@@ -46,6 +48,7 @@ public class ProjectRecyclerViewAdapter extends RecyclerView.Adapter<ProjectView
 
     @Override
     public void onBindViewHolder(@NonNull ProjectViewHolder holder, int position) {
+        // initialize
         // color box の色を変更
         GradientDrawable colorBoxBackground = (GradientDrawable) holder.homeListColorBox.getBackground();
         colorBoxBackground.setColor(context.getResources().getColor(R.color.black));
@@ -57,11 +60,23 @@ public class ProjectRecyclerViewAdapter extends RecyclerView.Adapter<ProjectView
         String stringCreatedAt = simpleDateFormat.format(projectList.get(position).getCreatedDate());
         holder.homeListDate.setText(stringCreatedAt);
         // todo holder.homeListEditIcon
+
+
+        // add functions
+        holder.homeListLinearLayout.setOnClickListener(this::linearLayoutOnClick);
     }
+
 
     @Override
     public int getItemCount() {
         return projectList.size();
+    }
+
+
+
+    private void linearLayoutOnClick(View view) {
+        Intent intent = new Intent(context, TreeActivity.class);
+        context.startActivity(intent);
     }
 
 }

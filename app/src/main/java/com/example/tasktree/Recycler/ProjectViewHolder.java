@@ -2,6 +2,7 @@ package com.example.tasktree.Recycler;
 
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ public class ProjectViewHolder extends RecyclerView.ViewHolder {
     public TextView homeListTitle;
     public TextView homeListProgress;
     public TextView homeListDate;
+    public LinearLayout homeListLinearLayout;
     public ImageView homeListEditIcon;
 
     public ProjectViewHolder(@NonNull View itemView) {
@@ -22,6 +24,7 @@ public class ProjectViewHolder extends RecyclerView.ViewHolder {
         homeListTitle = itemView.findViewById(R.id.homeListTitle);
         homeListProgress = itemView.findViewById(R.id.homeListDate);
         homeListDate = itemView.findViewById(R.id.homeListDate);
+        homeListLinearLayout = itemView.findViewById(R.id.homeListLinearLayout);
         homeListEditIcon = itemView.findViewById(R.id.homeListEditIcon);
     }
 }

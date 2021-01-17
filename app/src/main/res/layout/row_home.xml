@@ -30,7 +30,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
-            android:id="@+id/linearLayout"
+            android:id="@+id/homeListLinearLayout"
             android:layout_width="314dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
