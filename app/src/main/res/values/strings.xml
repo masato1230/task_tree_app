@@ -4,6 +4,9 @@
     <string name="project">Project</string>
     <string name="previous"><![CDATA[<]]></string>
     <string name="pick_a_color">Pick a Color</string>
+    <string name="save">保存</string>
+    <string name="delete">削除</string>
+    <string name="editTitle">Edit Project</string>
     <string-array name="project_colors">
         <item>Red</item>
         <item>Blue</item>

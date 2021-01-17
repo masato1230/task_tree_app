@@ -1,5 +1,6 @@
 package com.example.tasktree.Recycler;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -9,16 +10,20 @@ import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tasktree.Activity.MainActivity;
 import com.example.tasktree.Activity.TreeActivity;
 import com.example.tasktree.Data.ProjectDatabaseHandler;
 import com.example.tasktree.Data.TaskDatabaseHandler;
 import com.example.tasktree.Models.Project;
 import com.example.tasktree.R;
 
+import java.io.BufferedReader;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -73,15 +78,16 @@ public class ProjectRecyclerViewAdapter extends RecyclerView.Adapter<ProjectView
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
         String stringCreatedAt = simpleDateFormat.format(projectList.get(position).getCreatedDate());
         holder.homeListDate.setText(stringCreatedAt);
-        // todo holder.homeListEditIcon
 
 
         // add tags
         holder.homeListColorBox.setTag(projectList.get(position));
+        holder.homeListEditIcon.setTag(projectList.get(position));
 
         // add functions
         holder.homeListColorBox.setOnClickListener(this::colorBoxOnclick);
         holder.homeListLinearLayout.setOnClickListener(this::linearLayoutOnClick);
+        holder.homeListEditIcon.setOnClickListener(this::editIconOnClick);
     }
 
 
@@ -112,6 +118,48 @@ public class ProjectRecyclerViewAdapter extends RecyclerView.Adapter<ProjectView
     private void linearLayoutOnClick(View view) {
         Intent intent = new Intent(context, TreeActivity.class);
         context.startActivity(intent);
+    }
+
+
+    private void editIconOnClick(View view) {
+        Project selectedProject = (Project) view.getTag();
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_edit_project, null);
+        builder.setView(dialogView);
+
+        // initialize dialog
+        EditText editTitleEditText = dialogView.findViewById(R.id.homeEditDialogTitle);
+        Button editDeleteButton = dialogView.findViewById(R.id.homeEditDialogDeleteButton);
+        Button editSaveButton = dialogView.findViewById(R.id.homeEditDialogSaveButton);
+
+        Dialog dialog = builder.create();
+
+        // editDeleteButton
+        editDeleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                projectDB.deleteProject(selectedProject.getId());
+                Intent intent = new Intent(context, MainActivity.class);
+                context.startActivity(intent);
+                ((Activity) context).finish();
+                dialog.dismiss();
+            }
+        });
+
+        // editSaveButton
+        editSaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedProject.setTitle(editTitleEditText.getText().toString());
+                projectDB.updateProject(selectedProject);
+                Intent intent = new Intent(context, MainActivity.class);
+                context.startActivity(intent);
+                ((Activity) context).finish();
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
 }
