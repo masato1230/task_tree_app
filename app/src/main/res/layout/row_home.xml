@@ -9,7 +9,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-
     <TextView
         android:id="@+id/homeListColorBox"
         android:layout_width="20dp"
@@ -34,7 +33,6 @@
         android:orientation="vertical"
         app:layout_constraintStart_toEndOf="@+id/homeListColorBox"
         app:layout_constraintTop_toTopOf="parent">
-
         <TextView
             android:id="@+id/homeListTitle"
             android:layout_width="wrap_content"
@@ -56,7 +54,6 @@
                 android:text="45%"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
-
         </LinearLayout>
 
         <LinearLayout
@@ -72,12 +69,10 @@
                 android:layout_height="wrap_content"
                 android:text="2020/12/06 01:18" />
         </LinearLayout>
-
-
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/homeListEditIcon"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:padding="15dp"

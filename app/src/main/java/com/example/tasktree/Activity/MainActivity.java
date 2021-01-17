@@ -1,13 +1,16 @@
 package com.example.tasktree.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.CalendarContract;
+import android.widget.LinearLayout;
 
 import com.example.tasktree.R;
+import com.example.tasktree.Recycler.ProjectRecyclerViewAdapter;
 
 import java.text.SimpleDateFormat;
 
@@ -20,6 +23,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         recyclerView = findViewById(R.id.homeRecyclerView);
+
+        ProjectRecyclerViewAdapter recyclerViewAdapter = new ProjectRecyclerViewAdapter(this);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(manager);
+        recyclerView.setAdapter(recyclerViewAdapter);
 
 //        Intent intent = new Intent(Intent.ACTION_INSERT);
 //        intent.setData(CalendarContract.Events.CONTENT_URI);

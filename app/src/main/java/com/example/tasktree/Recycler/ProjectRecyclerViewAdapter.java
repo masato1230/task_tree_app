@@ -2,6 +2,8 @@ package com.example.tasktree.Recycler;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.text.Layout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -15,7 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.tasktree.Data.ProjectDatabaseHandler;
 import com.example.tasktree.Data.TaskDatabaseHandler;
 import com.example.tasktree.Models.Project;
+import com.example.tasktree.R;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class ProjectRecyclerViewAdapter extends RecyclerView.Adapter<ProjectViewHolder> {
@@ -35,16 +39,29 @@ public class ProjectRecyclerViewAdapter extends RecyclerView.Adapter<ProjectView
     @NonNull
     @Override
     public ProjectViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        View view = LayoutInflater.from(context).inflate(R.layout.row_home, null);
+        ProjectViewHolder viewHolder = new ProjectViewHolder(view);
+        return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ProjectViewHolder holder, int position) {
-
+        // color box の色を変更
+        GradientDrawable colorBoxBackground = (GradientDrawable) holder.homeListColorBox.getBackground();
+        colorBoxBackground.setColor(context.getResources().getColor(R.color.black));
+        // タイトルを変更
+        holder.homeListTitle.setText(projectList.get(position).getTitle());
+        // todo holder.homeListProgress
+        // 日付を変更
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+        String stringCreatedAt = simpleDateFormat.format(projectList.get(position).getCreatedDate());
+        holder.homeListDate.setText(stringCreatedAt);
+        // todo holder.homeListEditIcon
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return projectList.size();
     }
+
 }
