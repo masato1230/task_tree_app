@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.tasktree.Activity.MainActivity;
+import com.example.tasktree.Activity.TreeActivity;
 import com.example.tasktree.Data.ProjectDatabaseHandler;
 import com.example.tasktree.Models.Project;
 import com.example.tasktree.R;
@@ -63,11 +64,11 @@ public class HomeHeaderFragment extends Fragment {
                 project.setFinish(false);
                 project.setColorInteger(1);
                 project.setCreatedDate(new Date());
-                projectDB.add(project);
+                int projectID = (int) projectDB.add(project);
                 // 3.
-                Intent intent = new Intent(getContext(), MainActivity.class);
+                Intent intent = new Intent(getContext(), TreeActivity.class);
+                intent.putExtra("projectID", projectID);
                 getActivity().startActivity(intent);
-                getActivity().finish();
                 dialog.dismiss();
             }
         });

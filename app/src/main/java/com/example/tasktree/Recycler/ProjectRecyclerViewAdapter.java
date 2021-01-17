@@ -38,6 +38,8 @@ public class ProjectRecyclerViewAdapter extends RecyclerView.Adapter<ProjectView
         this.projectDB = new ProjectDatabaseHandler(context);
         this.taskDB = new TaskDatabaseHandler(context);
         this.projectList = projectDB.getAllProjects();
+
+        // todo reverse projectList
     }
 
 
@@ -82,6 +84,7 @@ public class ProjectRecyclerViewAdapter extends RecyclerView.Adapter<ProjectView
 
         // add tags
         holder.homeListColorBox.setTag(projectList.get(position));
+        holder.homeListLinearLayout.setTag(projectList.get(position));
         holder.homeListEditIcon.setTag(projectList.get(position));
 
         // add functions
@@ -116,7 +119,10 @@ public class ProjectRecyclerViewAdapter extends RecyclerView.Adapter<ProjectView
 
 
     private void linearLayoutOnClick(View view) {
+        Project selectedProject = (Project) view.getTag();
+        int projectID = selectedProject.getId();
         Intent intent = new Intent(context, TreeActivity.class);
+        intent.putExtra("projectID", projectID);
         context.startActivity(intent);
     }
 

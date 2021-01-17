@@ -2,7 +2,6 @@ package com.example.tasktree.Data;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -16,7 +15,6 @@ import com.example.tasktree.Models.Task;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -51,7 +49,7 @@ public class ProjectDatabaseHandler extends SQLiteOpenHelper {
     }
 
     // add
-    public void add(Project project) {
+    public long add(Project project) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -77,7 +75,7 @@ public class ProjectDatabaseHandler extends SQLiteOpenHelper {
         String stringCreatedAt = simpleDateFormat.format(project.getCreatedDate());
         values.put(ProjectConstants.KEY_CREATED_AT, stringCreatedAt);
 
-        db.insert(ProjectConstants.TABLE_NAME, null, values);
+        return db.insert(ProjectConstants.TABLE_NAME, null, values);
     }
 
     // get one
