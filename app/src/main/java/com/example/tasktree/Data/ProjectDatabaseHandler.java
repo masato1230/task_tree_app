@@ -16,13 +16,17 @@ import com.example.tasktree.Models.Task;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 public class ProjectDatabaseHandler extends SQLiteOpenHelper {
+    private Context context;
+
 
     public ProjectDatabaseHandler(@Nullable Context context) {
         super(context, ProjectConstants.DB_NAME, null, ProjectConstants.DB_VERSION);
+        this.context = context;
     }
 
     @Override
@@ -49,15 +53,17 @@ public class ProjectDatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(ProjectConstants.KEY_ID, project.getId());
         values.put(ProjectConstants.KEY_TITLE, project.getTitle());
         StringBuilder taskIDsStringBuilder = new StringBuilder();
-        for (Task task: project.getTasks()) {
-            String taskID = String.valueOf(task.getId());
-            taskIDsStringBuilder.append(taskID + ",");
+        createMainTask(project);
+        if (project.getTasks() != null) {
+            for (Task task: project.getTasks()) {
+                String taskID = String.valueOf(task.getId());
+                taskIDsStringBuilder.append(taskID + ",");
+            }
+            taskIDsStringBuilder.setLength(taskIDsStringBuilder.length()-1); // 余分なコンマを削除
+            values.put(ProjectConstants.KEY_TASK_IDS, taskIDsStringBuilder.toString());
         }
-        taskIDsStringBuilder.setLength(taskIDsStringBuilder.length()-1); // 余分なコンマを削除
-        values.put(ProjectConstants.KEY_TASK_IDS, taskIDsStringBuilder.toString());
         int isFinishInt = 0;
         if (project.isFinish()) {
             isFinishInt = 1;
@@ -165,12 +171,14 @@ public class ProjectDatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(ProjectConstants.KEY_TITLE, project.getTitle());
         StringBuilder taskIDsStringBuilder = new StringBuilder();
-        for (Task task: project.getTasks()) {
-            String taskID = String.valueOf(task.getId());
-            taskIDsStringBuilder.append(taskID + ",");
+        if (project.getTasks() != null) {
+            for (Task task: project.getTasks()) {
+                String taskID = String.valueOf(task.getId());
+                taskIDsStringBuilder.append(taskID + ",");
+            }
+            taskIDsStringBuilder.setLength(taskIDsStringBuilder.length()-1); // 余分なコンマを削除
+            values.put(ProjectConstants.KEY_TASK_IDS, taskIDsStringBuilder.toString());
         }
-        taskIDsStringBuilder.setLength(taskIDsStringBuilder.length()-1); // 余分なコンマを削除
-        values.put(ProjectConstants.KEY_TASK_IDS, taskIDsStringBuilder.toString());
         int isFinishInt = 0;
         if (project.isFinish()) {
             isFinishInt = 1;
@@ -200,5 +208,24 @@ public class ProjectDatabaseHandler extends SQLiteOpenHelper {
         String countQuery = "SELECT * FROM " + ProjectConstants.TABLE_NAME;
         Cursor cursor = db.rawQuery(countQuery, null, null);
         return cursor.getCount();
+    }
+
+
+    // project 新規作成時
+    public void createMainTask(Project project) {
+        // Project名と同じTaskをMainとして追加する。
+        Task mainTask = new Task();
+        mainTask.setTitle(project.getTitle());
+        mainTask.setIsCalender(false);
+        mainTask.setIsFinish(false);
+        mainTask.setIsMain(true);
+        mainTask.setX(100);
+        mainTask.setY(400);
+        TaskDatabaseHandler taskDB = new TaskDatabaseHandler(context);
+        taskDB.addTask(mainTask);
+
+        List<Task> taskList = new ArrayList<>();
+        taskList.add(mainTask);
+        project.setTasks(taskList);
     }
 }

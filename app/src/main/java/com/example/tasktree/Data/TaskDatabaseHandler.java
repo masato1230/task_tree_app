@@ -53,13 +53,15 @@ public class TaskDatabaseHandler extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(TaskConstants.KEY_TITLE, task.getTitle());
-        StringBuilder taskIDsStringBuilder = new StringBuilder();
-        for (Task subTask: task.getSubTaskList()) {
-            String taskID = String.valueOf(subTask.getId());
-            taskIDsStringBuilder.append(taskID + ",");
+        if (task.getSubTaskList() != null) {
+            StringBuilder taskIDsStringBuilder = new StringBuilder();
+            for (Task subTask: task.getSubTaskList()) {
+                String taskID = String.valueOf(subTask.getId());
+                taskIDsStringBuilder.append(taskID + ",");
+            }
+            taskIDsStringBuilder.setLength(taskIDsStringBuilder.length()-1); // 余分なコンマを削除
+            values.put(TaskConstants.KEY_SUB_TASK_IDS, taskIDsStringBuilder.toString());
         }
-        taskIDsStringBuilder.setLength(taskIDsStringBuilder.length()-1); // 余分なコンマを削除
-        values.put(TaskConstants.KEY_SUB_TASK_IDS, taskIDsStringBuilder.toString());
         int isCalenderInt = 0;
         if (task.isCalender()) {
             isCalenderInt = 1;
@@ -213,13 +215,15 @@ public class TaskDatabaseHandler extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(TaskConstants.KEY_TITLE, task.getTitle());
-        StringBuilder taskIDsStringBuilder = new StringBuilder();
-        for (Task subTask: task.getSubTaskList()) {
-            String taskID = String.valueOf(subTask.getId());
-            taskIDsStringBuilder.append(taskID + ",");
+        if (task.getSubTaskList() != null) {
+            StringBuilder taskIDsStringBuilder = new StringBuilder();
+            for (Task subTask: task.getSubTaskList()) {
+                String taskID = String.valueOf(subTask.getId());
+                taskIDsStringBuilder.append(taskID + ",");
+            }
+            taskIDsStringBuilder.setLength(taskIDsStringBuilder.length()-1); // 余分なコンマを削除
+            values.put(TaskConstants.KEY_SUB_TASK_IDS, taskIDsStringBuilder.toString());
         }
-        taskIDsStringBuilder.setLength(taskIDsStringBuilder.length()-1); // 余分なコンマを削除
-        values.put(TaskConstants.KEY_SUB_TASK_IDS, taskIDsStringBuilder.toString());
         int isCalenderInt = 0;
         if (task.isCalender()) {
             isCalenderInt = 1;

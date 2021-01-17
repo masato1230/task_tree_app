@@ -9,10 +9,13 @@ import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.widget.LinearLayout;
 
+import com.example.tasktree.Data.ProjectDatabaseHandler;
+import com.example.tasktree.Models.Project;
 import com.example.tasktree.R;
 import com.example.tasktree.Recycler.ProjectRecyclerViewAdapter;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -21,6 +24,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Project project = new Project();
+        project.setTitle("サンプル");
+        project.setCreatedDate(new Date());
+        project.setColorInteger(1);
+        project.setFinish(false);
+        ProjectDatabaseHandler projectDB = new ProjectDatabaseHandler(this);
+        projectDB.add(project);
+
 
         recyclerView = findViewById(R.id.homeRecyclerView);
 
