@@ -3,4 +3,12 @@
     <string name="home">Task Tree</string>
     <string name="project">Project</string>
     <string name="previous"><![CDATA[<]]></string>
+    <string name="pick_a_color">Pick a Color</string>
+    <string-array name="project_colors">
+        <item>Red</item>
+        <item>Blue</item>
+        <item>Green</item>
+        <item>Yellow</item>
+        <item>Gray</item>
+    </string-array>
 </resources>

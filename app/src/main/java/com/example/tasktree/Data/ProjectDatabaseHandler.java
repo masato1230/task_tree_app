@@ -188,8 +188,8 @@ public class ProjectDatabaseHandler extends SQLiteOpenHelper {
                 taskIDsStringBuilder.append(taskID + ",");
             }
             taskIDsStringBuilder.setLength(taskIDsStringBuilder.length()-1); // 余分なコンマを削除
-            values.put(ProjectConstants.KEY_TASK_IDS, taskIDsStringBuilder.toString());
         }
+        values.put(ProjectConstants.KEY_TASK_IDS, taskIDsStringBuilder.toString());
         int isFinishInt = 0;
         if (project.isFinish()) {
             isFinishInt = 1;
@@ -201,7 +201,7 @@ public class ProjectDatabaseHandler extends SQLiteOpenHelper {
         String stringCreatedAt = simpleDateFormat.format(project.getCreatedDate());
         values.put(ProjectConstants.KEY_CREATED_AT, stringCreatedAt);
 
-        return db.update(ProjectConstants.TABLE_NAME, values, ProjectConstants.KEY_ID, new String[] {String.valueOf(project.getId())});
+        return db.update(ProjectConstants.TABLE_NAME, values, ProjectConstants.KEY_ID + "=?", new String[] {String.valueOf(project.getId())});
     }
 
 

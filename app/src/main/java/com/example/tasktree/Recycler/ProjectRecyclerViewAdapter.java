@@ -1,18 +1,16 @@
 package com.example.tasktree.Recycler;
 
-import android.content.ContentValues;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.text.Layout;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tasktree.Activity.TreeActivity;
@@ -78,9 +76,14 @@ public class ProjectRecyclerViewAdapter extends RecyclerView.Adapter<ProjectView
         // todo holder.homeListEditIcon
 
 
+        // add tags
+        holder.homeListColorBox.setTag(projectList.get(position));
+
         // add functions
+        holder.homeListColorBox.setOnClickListener(this::colorBoxOnclick);
         holder.homeListLinearLayout.setOnClickListener(this::linearLayoutOnClick);
     }
+
 
 
     @Override
@@ -88,6 +91,22 @@ public class ProjectRecyclerViewAdapter extends RecyclerView.Adapter<ProjectView
         return projectList.size();
     }
 
+
+    private void colorBoxOnclick(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.pick_a_color);
+        builder.setSingleChoiceItems(R.array.project_colors, 0, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                Project selectedProject = (Project) view.getTag();
+                selectedProject.setColorInteger(which+1);
+                projectDB.updateProject(selectedProject);
+                notifyDataSetChanged();
+            }
+        });
+        builder.create().show();
+    }
 
 
     private void linearLayoutOnClick(View view) {
