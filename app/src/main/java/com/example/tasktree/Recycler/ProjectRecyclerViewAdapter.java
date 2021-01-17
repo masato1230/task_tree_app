@@ -51,7 +51,23 @@ public class ProjectRecyclerViewAdapter extends RecyclerView.Adapter<ProjectView
         // initialize
         // color box の色を変更
         GradientDrawable colorBoxBackground = (GradientDrawable) holder.homeListColorBox.getBackground();
-        colorBoxBackground.setColor(context.getResources().getColor(R.color.black));
+        switch (projectList.get(position).getColorInteger()) {
+            case 1:
+                colorBoxBackground.setColor(context.getResources().getColor(R.color.project_color_red));
+                break;
+            case 2:
+                colorBoxBackground.setColor(context.getResources().getColor(R.color.project_color_blue));
+                break;
+            case 3:
+                colorBoxBackground.setColor(context.getResources().getColor(R.color.project_color_green));
+                break;
+            case 4:
+                colorBoxBackground.setColor(context.getResources().getColor(R.color.project_color_yellow));
+                break;
+            case 5:
+                colorBoxBackground.setColor(context.getResources().getColor(R.color.project_color_gray));
+                break;
+        }
         // タイトルを変更
         holder.homeListTitle.setText(projectList.get(position).getTitle());
         // todo holder.homeListProgress

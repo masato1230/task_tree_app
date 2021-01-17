@@ -12,7 +12,7 @@ public class Project {
     private String title;
     private List<Task> tasks;
     private boolean isFinish;
-    private int colorInteger;
+    private int colorInteger; // 1: red, 2: blue, 3: green, 4: yellow, 5: gray
     private Date createdDate;
 
     public Project() {

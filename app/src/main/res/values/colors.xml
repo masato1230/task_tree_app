@@ -10,4 +10,9 @@
     <color name="green">#55C500</color>
     <color name="gray">#F1F3F4</color>
     <color name="dark_gray">#595959</color>
+    <color name="project_color_red">#FF0000</color>
+    <color name="project_color_blue">#0000FF</color>
+    <color name="project_color_green">#008000</color>
+    <color name="project_color_yellow">#ffd700</color>
+    <color name="project_color_gray">#696969</color>
 </resources>
