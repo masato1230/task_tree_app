@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 public class TaskDatabaseHandler extends SQLiteOpenHelper {
-    public TaskDatabaseHandler(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
+    public TaskDatabaseHandler(@Nullable Context context) {
         super(context, TaskConstants.DB_NAME, null, TaskConstants.DB_VERSION);
     }
 
